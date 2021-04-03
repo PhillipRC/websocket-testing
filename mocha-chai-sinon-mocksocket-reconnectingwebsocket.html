@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Mocha Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./node_modules/mocha/mocha.css" />
+</head>
+
+<body>
+  <div id="mocha"></div>
+
+  <script src="./node_modules/chai/chai.js"></script>
+  <script src="./node_modules/mocha/mocha.js"></script>
+  <script src="./node_modules/sinon/pkg/sinon.js"></script>
+  <script src="./node_modules/mock-socket/dist/mock-socket.js"></script>
+  <script src="./node_modules/reconnecting-websocket/dist/reconnecting-websocket-iife.js"></script>
+
+  <script class="mocha-init">
+
+    // use expect/assert from chai
+    let expect = chai.expect;
+    let assert = chai.assert;
+    // use Server from mock-socket
+    let Server = Mock.Server;
+
+    // setup mocha
+    mocha.setup("bdd");
+    mocha.checkLeaks();
+
+    // function to wait for a WebSocket to connect
+    async function connection(socket, timeout = 10000) {
+      const isOpened = () => socket.readyState === WebSocket.OPEN;
+      if (socket.readyState !== WebSocket.CONNECTING) {
+        return isOpened();
+      } else {
+        const intrasleep = 100;
+        const ttl = timeout / intrasleep;
+        let loop = 0;
+        while (socket.readyState === WebSocket.CONNECTING && loop < ttl) {
+          await new Promise((resolve) => setTimeout(resolve, intrasleep));
+          loop++;
+        }
+        return isOpened();
+      }
+    }
+
+    // wait for an amount of time
+    const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+    // waits for an event to trigger
+    const waitForEvent = (obj, eventType) => new Promise(function (resolve) {
+      let resolver = () => {
+        obj.removeEventListener(eventType, resolver)
+        resolve();
+      }
+      obj.addEventListener(eventType, resolver);
+    });
+
+    describe("WebSocket()", function () {
+      let socket;
+      let spyOpen;
+      let spyMessage;
+
+      before("Create a WebSocket", function () {
+        // create a WebSocket
+        socket = new window.WebSocket("ws://localhost:8080");
+        // add open event spy
+        spyOpen = sinon.spy();
+        socket.addEventListener("open", spyOpen);
+        spyMessage = sinon.spy();
+        socket.onmessage = spyMessage;
+      });
+
+      after("Close the WebSocket", function () {
+        socket.removeEventListener("open", spyOpen);
+        // close the WebSocket
+        socket.close();
+      });
+
+      it("should have expected members on WebSocket() instance", function () {
+        expect(socket.url).to.exist;
+        expect(socket.url).to.equal("ws://localhost:8080/");
+        expect(socket.addEventListener).to.exist;
+        expect(socket.removeEventListener).to.exist;
+        assert.isFunction(socket.addEventListener);
+        expect(socket.readyState).to.exist;
+        expect(socket.readyState).to.equal(WebSocket.CONNECTING);
+      });
+
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        // await connection(socket);
+        await waitForEvent(socket, 'open');
+        expect(socket.readyState).to.equal(WebSocket.OPEN);
+      });
+
+      it("should have called open connection spy", function () {
+        expect(spyOpen.called).to.equal(true);
+      });
+
+      it("should send and receive an echo", async () => {
+        socket.send('echo');
+        expect(spyMessage.callCount).to.equal(1);
+        await waitForEvent(socket, 'message');
+        expect(spyMessage.callCount).to.equal(2);
+      });
+
+    });
+
+    describe("WebSocket() using Mock-Server", function () {
+      let socket;
+      let spyOpen;
+      let mockServer;
+
+      before("Create a WebSocket", function () {
+        // create a mock server
+        mockServer = new Server('ws://localhost:8081');
+        // create a WebSocket
+        socket = new window.WebSocket("ws://localhost:8081");
+        // add open event spy
+        spyOpen = sinon.spy();
+        socket.addEventListener("open", spyOpen);
+      });
+
+      after("Close the WebSocket", function () {
+        socket.removeEventListener("open", spyOpen);
+        // close the WebSocket
+        socket.close();
+        mockServer.stop();
+      });
+
+      it("should have expected members on WebSocket() instance", function () {
+        expect(socket.url).to.exist;
+        expect(socket.url).to.equal("ws://localhost:8081/");
+        expect(socket.addEventListener).to.exist;
+        expect(socket.removeEventListener).to.exist;
+        assert.isFunction(socket.addEventListener);
+        expect(socket.readyState).to.exist;
+        expect(socket.readyState).to.equal(WebSocket.CONNECTING);
+      });
+
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        const opened = await connection(socket);
+        expect(socket.readyState).to.equal(WebSocket.OPEN);
+      });
+      it("should have called open connection spy", function () {
+        expect(spyOpen.called).to.equal(true);
+      });
+    });
+
+
+    describe("ReconnectingWebSocket() using a real server", function () {
+      let socket;
+      let spyOpen;
+
+      before("Create a ReconnectingWebSocket", function () {
+        // create ReconnectingWebSocket
+        socket = new ReconnectingWebSocket('ws://localhost:8080');
+
+        // add open event spy
+        spyOpen = sinon.spy();
+        socket.addEventListener("open", spyOpen);
+      });
+
+      after("Close the ReconnectingWebSocket", function () {
+        socket.removeEventListener("open", spyOpen);
+        // close the WebSocket
+        socket.close();
+      });
+
+      it("should have expected members on ReconnectingWebSocket() instance", async () => {
+        expect(socket.url).to.exist;
+        expect(socket.addEventListener).to.exist;
+        expect(socket.removeEventListener).to.exist;
+        assert.isFunction(socket.addEventListener);
+        expect(socket.readyState).to.exist;
+        // Unlike window.WebSocket the URL and other values are not populated right away
+        expect(socket.url).to.equal("");
+      });
+
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        const opened = await connection(socket);
+        expect(socket.readyState).to.equal(WebSocket.OPEN);
+      });
+
+      it("should have expected values after connection open", function () {
+        expect(socket.url).to.equal("ws://localhost:8080/");
+      });
+
+      it("should have called open connection spy", function () {
+        expect(spyOpen.called).to.equal(true);
+      });
+    });
+
+    describe("ReconnectingWebSocket() using Mock-Server", function () {
+      let socket;
+      let spyOpen;
+      let mockServer;
+
+      before("Create a WebSocket", function () {
+        // create a mock server
+        mockServer = new Server('ws://localhost:8081');
+        // create ReconnectingWebSocket
+        socket = new ReconnectingWebSocket('ws://localhost:8081');
+        // add open event spy
+        spyOpen = sinon.spy();
+        socket.addEventListener("open", spyOpen);
+      });
+
+      after("Close the WebSocket", function () {
+        socket.removeEventListener("open", spyOpen);
+        // close the WebSocket
+        socket.close();
+        mockServer.stop();
+      });
+
+      it("should have expected members on ReconnectingWebSocket() instance", async () => {
+        expect(socket.url).to.exist;
+        expect(socket.addEventListener).to.exist;
+        expect(socket.removeEventListener).to.exist;
+        assert.isFunction(socket.addEventListener);
+        expect(socket.readyState).to.exist;
+        // Unlike window.WebSocket the URL and other values are not populated right away
+        expect(socket.url).to.equal("");
+      });
+
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        const opened = await connection(socket);
+        expect(socket.readyState).to.equal(WebSocket.OPEN);
+      });
+
+      it("should have expected values after connection open", function () {
+        expect(socket.url).to.equal("ws://localhost:8081/");
+      });
+
+      it("should have called open connection spy", function () {
+        expect(spyOpen.called).to.equal(true);
+      });
+    });
+
+
+    mocha.run();
+
+  </script>
+
+</body>
+
+</html>
