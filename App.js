@@ -8,8 +8,8 @@ class App {
    * @param {*} url WebSocket server
    * @param {*} outputElement Element to display server messages
    */
-  constructor(url, outputElement) {
-    console.debug('App:constructor', url = 'ws://localhost:8080')
+  constructor(url = 'ws://localhost:8080', outputElement) {
+    console.debug('App:constructor', url)
     // create a WebSocket
     this.ws = new WebSocket(url)
     // listen for message event from WebSocket

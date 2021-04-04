@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>Mocha Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./node_modules/mocha/mocha.css" />
+</head>
+
+<body>
+  <div id="mocha"></div>
+
+  <script src="./node_modules/chai/chai.js"></script>
+  <script src="./node_modules/mocha/mocha.js"></script>
+  <script src="./node_modules/sinon/pkg/sinon.js"></script>
+  <script src="./node_modules/mock-websocket/dist/mock-websocket.js"></script>
+  <script src="./App.js"></script>
+
+  <script class="mocha-init">
+    // use expect/assert from chai
+    let expect = chai.expect;
+    let assert = chai.assert;
+    // use Server from mock-socket
+    let Server = MockWebSocket.Server;
+
+    // waits for an event to trigger
+    const waitForEvent = (obj, eventType) => new Promise(function (resolve) {
+      let resolver = (event) => {
+        obj.removeEventListener(eventType, resolver)
+        resolve(event);
+      }
+      obj.addEventListener(eventType, resolver);
+    });
+
+
+    // setup mocha
+    mocha.setup("bdd");
+    mocha.checkLeaks();
+
+    describe("App()", function () {
+
+      let app;
+      let spyApp;
+
+      before("Create a WebSocket", function () {
+        app = new App('ws://localhost:8080');
+        spyApp = sinon.spy(app);
+      });
+
+      it("should have created app", function () {
+        expect(app).to.exist;
+      });
+
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        await waitForEvent(app.ws, 'open');
+        expect(app.ws.readyState).to.equal(WebSocket.OPEN);
+      });
+
+      it("should have called App.handleServerMessage()", function () {
+        expect(spyApp.handleServerMessage.calledOnce).to.be.true;
+        expect(spyApp.handleServerMessage.callCount).to.equal(1);
+      });
+
+      it("should send and receive an echo", async () => {
+        app.send('echo');
+        // wait for a message event
+        const messageEvent = await waitForEvent(app.ws, 'message');
+        expect(messageEvent.data).to.be.equal('echo');
+        expect(spyApp.handleServerMessage.callCount).to.equal(2);
+      });
+
+    });
+
+    describe("App() with Mock Server", function () {
+
+      let app;
+      let spyApp;
+      let mockServer;
+
+      before("Create a WebSocket", function () {
+        // create a mock server
+        mockServer = new Server('ws://localhost:8081');
+
+        // mock response when client connects
+        mockServer.on('connection', function (socket) {
+          mockServer.send('ack');
+        });
+
+        // mock response when client connects
+        mockServer.on('message', function () {
+          mockServer.send('echo');
+        });
+
+        // create app
+        app = new App('ws://localhost:8081');
+        spyApp = sinon.spy(app);
+      });
+
+      it("should have created app", function () {
+        expect(app).to.exist;
+      });
+
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        await waitForEvent(app.ws, 'open');
+        expect(app.ws.readyState).to.equal(WebSocket.OPEN);
+      });
+
+      it("should have called App.handleServerMessage()", function () {
+        expect(spyApp.handleServerMessage.calledOnce).to.be.true;
+        expect(spyApp.handleServerMessage.callCount).to.equal(1);
+      });
+
+      it("should send and receive an echo", async () => {
+        app.send('echo');
+        // wait for a message event
+        const messageEvent = await waitForEvent(app.ws, 'message');
+        expect(messageEvent.data).to.be.equal('echo');
+        expect(spyApp.handleServerMessage.callCount).to.equal(2);
+      });
+
+    });
+
+    mocha.run();
+
+  </script>
+
+</body>
+
+</html>
