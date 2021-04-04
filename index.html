@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./node_modules/mocha/mocha.css" />
+</head>
+
+<body>
+
+  <p>
+    <button onclick="app.send('echo')">Send Echo</button>
+  </p>
+
+  <pre id="output"></pre>
+
+  <script src="./App.js"></script>
+
+  <script>
+
+    const output = document.getElementById("output");
+
+    const app = new App('ws://localhost:8080', output);
+
+  </script>
+
+</body>
+
+</html>
