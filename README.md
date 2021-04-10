@@ -46,7 +46,9 @@ Some of the tests require the WebSocket Server application to be running to be 1
 
 ![GitHub Logo](./tests-browser/mocha-chai.png)
 
-## /server/[server.js](./server/server.js)
+---
+
+## /server/[server.js](./websocket-server/server.js)
 Local Websocket Server in Node
 > `node ./websocket-server/server.js`
 
@@ -81,7 +83,7 @@ WebSocket Client Application
 
 ----
 
-## test-browser/[app.html](./test-browser/app.html)
+## tests-browser/[app.html](./tests-browser/app.html)
 - Tests running in a Browser
 - Mocha, Chai, Sinon
 - Mock-WebSocket a 'generic' WebSocket server implementation
