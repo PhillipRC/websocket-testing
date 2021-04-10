@@ -22,7 +22,7 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 # Folders
 
 - `/tests-browser` - Tests that run in a browser
-- `/test-cli` - Tests that run in the CLI
+- `/tests-cli` - Tests that run in the CLI
 - `/websocket-browser-client` - A browser based WebSocket Client app
 - `/websocket-node-server` - A Node based WebSocket Server app
 
