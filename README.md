@@ -49,7 +49,9 @@ Some of the tests require the WebSocket Server application to be running to be 1
 ---
 
 ## /server/[server.js](./websocket-server/server.js)
-Local Websocket Server in Node
+Local Websocket Server in Node, allows for:
+- A connection with an `ack` response
+- Receiving and sending an `echo` message
 > `node ./websocket-server/server.js`
 
 ![GitHub Logo](./websocket-server/server.png)
@@ -77,6 +79,7 @@ Local Websocket Server in Node
 
 ## /client
 WebSocket Client Application
+Has an option to send an `echo` message and a display for data returned by the `WebSocket.onmessage` event
 > `start chrome ./websocket-client/index.html`
 
 ![GitHub Logo](./websocket-client/index.png)
@@ -84,6 +87,7 @@ WebSocket Client Application
 ----
 
 ## tests-browser/[app.html](./tests-browser/app.html)
+Runs two sets of tests one against a real WebSocket server then the same tests against a Mock WebSocket server
 - Tests running in a Browser
 - Mocha, Chai, Sinon
 - Mock-WebSocket a 'generic' WebSocket server implementation
