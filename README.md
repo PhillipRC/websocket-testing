@@ -32,47 +32,59 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 
 Some of the tests require the WebSocket Server application to be running to be 100% successful
 
-## tests-cli/mocha-chai.spec.js
+## tests-cli/[mocha-chai.spec.js](./tests-cli/mocha-chai.spec.js)
 - Mocha, Chai in CLI
 > `npx mocha ./tests-cli/mocha-chai.spec.js`
 
 ![GitHub Logo](./tests-cli/mocha-chai.spec.png)
 
-## tests-browser/mocha-chai.html
+----
+
+## tests-browser/[mocha-chai.html](./tests-browser/mocha-chai.html)
 - Mocha, Chai in Browser
 > `start chrome ./tests-browser/mocha-chai.html`
 
 ![GitHub Logo](./tests-browser/mocha-chai.png)
 
-## /server/server.js
+## /server/[server.js](./server/server.js)
 Local Websocket Server in Node
 > `node ./websocket-server/server.js`
 
 ![GitHub Logo](./websocket-server/server.png)
 
-## tests-browser/mocha-chai-sinon.html
+----
+
+## tests-browser/[mocha-chai-sinon.html](./tests-browser/mocha-chai-sinon.html)
 - Mocha, Chai, Sinon in Browser
 > `start chrome ./tests-browser/mocha-chai-sinon.html`
 
-## tests-browser/mocha-chai-sinon-mocksocket.html
-- Tests running in a Browser
-- Mocha, Chai, Sinon
-- Mock-Socket mocks a socket.io server implementation
-> `start chrome ./tests-browser/mocha-chai-sinon.html`
+![GitHub Logo](./tests-browser/mocha-chai-sinon.png)
 
-## tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.html
+----
+
+## tests-browser/[mocha-chai-sinon-mocksocket-reconnectingwebsocket.html](./tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.html)
 - Tests running in a Browser
 - Mocha, Chai, Sinon
 - Mock-Socket mocks a socket.io server implementation
 - Reconnecting-Websocket
 > `start chrome ./tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.html`
 
+![GitHub Logo](./tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.png)
+
+----
+
 ## /client
 WebSocket Client Application
 > `start chrome ./websocket-client/index.html`
 
-## test-browsers/app.html
+![GitHub Logo](./websocket-client/index.png)
+
+----
+
+## test-browser/[app.html](./test-browser/app.html)
 - Tests running in a Browser
 - Mocha, Chai, Sinon
 - Mock-WebSocket a 'generic' WebSocket server implementation
 > `start chrome ./tests-browser/app.html`
+
+![GitHub Logo](./tests-browser/app.png)
