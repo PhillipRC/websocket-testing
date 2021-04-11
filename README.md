@@ -32,13 +32,13 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 
 Some of the tests require the WebSocket Server application to be running to be 100% successful
 
-## /websocket-server/[server.js](./websocket-server/server.js)
+## /websocket-node-server/[server.js](./websocket-node-server/server.js)
 Local Server and Web Server in Node, allows for:
 - Serving a WebSocket @ localhost:8080
 - Serving project files @ localhost:3000/`filePath`
-> `node ./websocket-server/server.js`
+> `node ./websocket-node-server/server.js`
 
-![GitHub Logo](./websocket-server/server.png)
+![GitHub Logo](./websocket-node-server/server.png)
 
 ----
 
