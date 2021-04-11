@@ -48,7 +48,7 @@ export default class App {
      * Send a message via the WebSocket
      * @param {string} message 
      */
-    async send(message) {
+    send = async (message) => {
         console.debug('App:send', message);
         if (this.ws.readyState !== WebSocket.OPEN) {
             console.debug('App:send waiting for WebSocket open event')
@@ -63,7 +63,7 @@ export default class App {
      * @param {string} message 
      * @param {object} outputElement 
      */
-    handleServerMessage(message, outputElement) {
+    handleServerMessage = (message, outputElement) => {
         console.debug('App:handleServerMessage', message)
         // only send to outputElement if it exists
         if (outputElement) {
