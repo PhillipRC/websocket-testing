@@ -9,20 +9,12 @@
 <body>
 
   <p>
-    <button onclick="app.send('echo')">Send Echo</button>
+    <button id="echoOption">Send Echo</button>
   </p>
 
   <pre id="output"></pre>
 
-  <script src="./App.js"></script>
-
-  <script>
-
-    const output = document.getElementById("output");
-
-    const app = new App('ws://localhost:8080', output);
-
-  </script>
+  <script type="module" src="./main.mjs.js"></script>
 
 </body>
 

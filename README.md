@@ -22,7 +22,7 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 # Folders
 
 - `/tests-browser` - Tests that run in a browser
-- `/tests-cli` - Tests that run in the CLI
+- `/tests-node` - Tests that run in the CLI (Node)
 - `/websocket-browser-client` - A browser based WebSocket Client app
 - `/websocket-node-server` - A Node based WebSocket Server app
 
@@ -32,35 +32,35 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 
 Some of the tests require the WebSocket Server application to be running to be 100% successful
 
-## tests-cli/[mocha-chai.spec.js](./tests-cli/mocha-chai.spec.js)
-- Mocha, Chai in CLI
-> `npx mocha ./tests-cli/mocha-chai.spec.js`
-
-![GitHub Logo](./tests-cli/mocha-chai.spec.png)
-
-----
-
-## tests-browser/[mocha-chai.html](./tests-browser/mocha-chai.html)
-- Mocha, Chai in Browser
-> `start chrome ./tests-browser/mocha-chai.html`
-
-![GitHub Logo](./tests-browser/mocha-chai.png)
-
----
-
-## /server/[server.js](./websocket-server/server.js)
-Local Websocket Server in Node, allows for:
-- A connection with an `ack` response
-- Receiving and sending an `echo` message
+## /websocket-server/[server.js](./websocket-server/server.js)
+Local Server and Web Server in Node, allows for:
+- Serving a WebSocket @ localhost:8080
+- Serving project files @ localhost:3000/`filePath`
 > `node ./websocket-server/server.js`
 
 ![GitHub Logo](./websocket-server/server.png)
 
 ----
 
+## tests-node/[mocha-chai.spec.js](./tests-node/mocha-chai.spec.js)
+- Mocha, Chai in CLI
+> `npx mocha ./tests-node/mocha-chai.spec.js`
+
+![GitHub Logo](./tests-node/mocha-chai.spec.png)
+
+----
+
+## tests-browser/[mocha-chai.html](./tests-browser/mocha-chai.html)
+- Mocha, Chai in Browser
+> `start chrome http://localhost:3000/tests-browser/mocha-chai.html`
+
+![GitHub Logo](./tests-browser/mocha-chai.png)
+
+---
+
 ## tests-browser/[mocha-chai-sinon.html](./tests-browser/mocha-chai-sinon.html)
 - Mocha, Chai, Sinon in Browser
-> `start chrome ./tests-browser/mocha-chai-sinon.html`
+> `start chrome http://localhost:3000/tests-browser/mocha-chai-sinon.html`
 
 ![GitHub Logo](./tests-browser/mocha-chai-sinon.png)
 
@@ -71,7 +71,7 @@ Local Websocket Server in Node, allows for:
 - Mocha, Chai, Sinon
 - Mock-Socket mocks a socket.io server implementation
 - Reconnecting-Websocket
-> `start chrome ./tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.html`
+> `start chrome http://localhost:3000/tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.html`
 
 ![GitHub Logo](./tests-browser/mocha-chai-sinon-mocksocket-reconnectingwebsocket.png)
 
@@ -80,7 +80,7 @@ Local Websocket Server in Node, allows for:
 ## /client
 WebSocket Client Application
 Has an option to send an `echo` message and a display for data returned by the `WebSocket.onmessage` event
-> `start chrome ./websocket-client/index.html`
+> `start chrome http://localhost:3000/websocket-client/index.html`
 
 ![GitHub Logo](./websocket-client/index.png)
 
@@ -91,6 +91,6 @@ Runs two sets of tests one against a real WebSocket server then the same tests a
 - Tests running in a Browser
 - Mocha, Chai, Sinon
 - Mock-WebSocket a 'generic' WebSocket server implementation
-> `start chrome ./tests-browser/app.html`
+> `start chrome http://localhost:3000/tests-browser/app.html`
 
 ![GitHub Logo](./tests-browser/app.png)
