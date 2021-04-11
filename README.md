@@ -77,7 +77,7 @@ Local Server and Web Server in Node, allows for:
 
 ----
 
-## /client
+## websocket-browser-client
 WebSocket Client Application
 Has an option to send an `echo` message and a display for data returned by the `WebSocket.onmessage` event
 > `start chrome http://localhost:3000/websocket-browser-client/index.html`
