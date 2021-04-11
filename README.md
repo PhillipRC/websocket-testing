@@ -21,12 +21,14 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 
 ---
 
-# Folders
+# Files
 
+- `/cypress` - Tests that run in a Cypress
 - `/tests-browser` - Tests that run in a browser
 - `/tests-node` - Tests that run in the CLI (Node)
 - `/websocket-browser-client` - A browser based WebSocket Client app
 - `/websocket-node-server` - A Node based WebSocket Server app
+- `cypress.json` - Cypress configuration
 
 ---
 
@@ -99,7 +101,7 @@ Runs two sets of tests one against a real WebSocket server then the same tests a
 
 ----
 
-## cypress/[app.spec.js](./cypress/app.spec.js)
+## cypress/[app.spec.js](./cypress/integration/app.spec.js)
 Runs tests against the application in browser within the Cypress framework
 > `npx cypress run --spec **/app.spec.js`
 
