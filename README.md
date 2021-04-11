@@ -102,7 +102,7 @@ Runs two sets of tests one against a real WebSocket server then the same tests a
 ----
 
 ## cypress/[app.spec.js](./cypress/integration/app.spec.js)
-Runs tests against the application in browser within the Cypress framework
+Runs tests against the application within a browser within the Cypress
 > `npx cypress run --spec **/app.spec.js`
 
 ![GitHub Logo](./cypress/integration/app.spec.png)
