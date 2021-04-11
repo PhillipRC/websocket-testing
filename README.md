@@ -7,6 +7,8 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 - [Reconnecting-WebSocket](https://github.com/pladaria/reconnecting-websocket#readme) automaticaly reconnects if the WebSocket connection is lost
 - [Mock-Socket](https://github.com/thoov/mock-socket) mocks a socket.io server implementation
 - [Mock-WebSocket](https://github.com/PhillipRC/mock-websocket) a 'generic' WebSocket server implementation
+- [Express](https://github.com/expressjs/express) a Node Webserver
+- [Cypress](https://github.com/cypress-io/cypress) a Browser based Test Runner
 
 
 ## Getting Started
@@ -94,3 +96,11 @@ Runs two sets of tests one against a real WebSocket server then the same tests a
 > `start chrome http://localhost:3000/tests-browser/app.html`
 
 ![GitHub Logo](./tests-browser/app.png)
+
+----
+
+## cypress/[app.spec.js](./cypress/app.spec.js)
+Runs tests against the application in browser within the Cypress framework
+> `npx cypress run --spec **/app.spec.js`
+
+![GitHub Logo](./cypress/integration/app.spec.png)

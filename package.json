@@ -9,6 +9,8 @@
   "license": "ISC",
   "dependencies": {
     "chai": "^4.3.4",
+    "cypress": "^7.0.1",
+    "express": "^4.17.1",
     "mocha": "^8.3.2",
     "mock-socket": "^9.0.3",
     "mock-websocket": "github:PhillipRC/mock-websocket",
