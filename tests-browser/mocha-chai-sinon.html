@@ -2,139 +2,139 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>Mocha Tests</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  <meta charset="utf-8" />
+  <title>Mocha Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
 </head>
 
 <body>
-    <div id="mocha"></div>
+  <div id="mocha"></div>
 
-    <script src="../node_modules/chai/chai.js"></script>
-    <script src="../node_modules/mocha/mocha.js"></script>
-    <script src="../node_modules/sinon/pkg/sinon.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/sinon/pkg/sinon.js"></script>
 
-    <script class="mocha-init">
-        // use expect/assert from chai
-        let expect = chai.expect;
-        let assert = chai.assert;
+  <script class="mocha-init">
+    // use expect/assert from chai
+    let expect = chai.expect;
+    let assert = chai.assert;
 
-        // setup mocha
-        mocha.setup("bdd");
-        mocha.checkLeaks();
+    // setup mocha
+    mocha.setup("bdd");
+    mocha.checkLeaks();
 
-        // function to write tests against
-        function once(fn) {
-            var returnValue,
-                called = false;
-            return function () {
-                if (!called) {
-                    called = true;
-                    returnValue = fn.apply(this, arguments);
-                }
-                return returnValue;
-            };
+    // function to write tests against
+    function once(fn) {
+      var returnValue,
+        called = false;
+      return function () {
+        if (!called) {
+          called = true;
+          returnValue = fn.apply(this, arguments);
         }
+        return returnValue;
+      };
+    }
 
-        // function to wait for a WebSocket to connect
-        async function connection(socket, timeout = 10000) {
-            const isOpened = () => socket.readyState === WebSocket.OPEN;
-            if (socket.readyState !== WebSocket.CONNECTING) {
-                return isOpened();
-            } else {
-                const intrasleep = 100;
-                const ttl = timeout / intrasleep;
-                let loop = 0;
-                while (socket.readyState === WebSocket.CONNECTING && loop < ttl) {
-                    await new Promise((resolve) => setTimeout(resolve, intrasleep));
-                    loop++;
-                }
-                return isOpened();
-            }
+    // function to wait for a WebSocket to connect
+    async function connection(socket, timeout = 10000) {
+      const isOpened = () => socket.readyState === WebSocket.OPEN;
+      if (socket.readyState !== WebSocket.CONNECTING) {
+        return isOpened();
+      } else {
+        const intrasleep = 100;
+        const ttl = timeout / intrasleep;
+        let loop = 0;
+        while (socket.readyState === WebSocket.CONNECTING && loop < ttl) {
+          await new Promise((resolve) => setTimeout(resolve, intrasleep));
+          loop++;
         }
+        return isOpened();
+      }
+    }
 
-        describe("sinon.fake()", function () {
-            it("should create and test a fake()", function () {
-                // create a fake()
-                var callback = sinon.fake();
+    describe("sinon.fake()", function () {
+      it("should create and test a fake()", function () {
+        // create a fake()
+        var callback = sinon.fake();
 
-                // pass the fake() to the test function
-                var proxy = once(callback);
-                proxy();
-                proxy();
+        // pass the fake() to the test function
+        var proxy = once(callback);
+        proxy();
+        proxy();
 
-                // expect the fake to have been called
-                expect(callback.called).to.be.true;
+        // expect the fake to have been called
+        expect(callback.called).to.be.true;
 
-                // expect the fake to have only been called once
-                expect(callback.callCount).to.equal(1);
-            });
+        // expect the fake to have only been called once
+        expect(callback.callCount).to.equal(1);
+      });
+    });
+
+    describe("sinon.stub()", function () {
+      it("should create and test a stub()", function () {
+        const stub = sinon.stub();
+        stub.returns(54);
+        expect(stub()).to.equal(54);
+      });
+
+      it("should stub and test calling window.alert()", function () {
+        // stub window.alert()
+        const stub = sinon.stub(window, "alert").callsFake(function (msg) {
+          return false;
         });
 
-        describe("sinon.stub()", function () {
-            it("should create and test a stub()", function () {
-                const stub = sinon.stub();
-                stub.returns(54);
-                expect(stub()).to.equal(54);
-            });
+        // call window.alert()
+        expect(window.alert("Alert Dialog")).to.equal(false);
 
-            it("should stub and test calling window.alert()", function () {
-                // stub window.alert()
-                const stub = sinon.stub(window, "alert").callsFake(function (msg) {
-                    return false;
-                });
+        // restore the stubbed functionality
+        stub.restore();
+      });
+    });
 
-                // call window.alert()
-                expect(window.alert("Alert Dialog")).to.equal(false);
+    //
+    describe("WebSocket()", function () {
+      let socket;
+      let spyOpen;
 
-                // restore the stubbed functionality
-                stub.restore();
-            });
-        });
+      before("Create a WebSocket", function () {
+        // create a WebSocket
+        socket = new window.WebSocket("ws://localhost:8080");
+        // add open event spy
+        spyOpen = sinon.spy();
+        socket.addEventListener("open", spyOpen);
+      });
 
-        //
-        describe("WebSocket()", function () {
-            let socket;
-            let spyOpen;
+      after("Close the WebSocket", function () {
+        socket.removeEventListener("open", spyOpen);
+        // close the WebSocket
+        socket.close();
+      });
 
-            before("Create a WebSocket", function () {
-                // create a WebSocket
-                socket = new window.WebSocket("ws://localhost:8080");
-                // add open event spy
-                spyOpen = sinon.spy();
-                socket.addEventListener("open", spyOpen);
-            });
+      it("should have expected members on WebSocket() instance", function () {
+        expect(socket.url).to.exist;
+        expect(socket.url).to.equal("ws://localhost:8080/");
+        expect(socket.addEventListener).to.exist;
+        expect(socket.removeEventListener).to.exist;
+        assert.isFunction(socket.addEventListener);
+        expect(socket.readyState).to.exist;
+        expect(socket.readyState).to.equal(WebSocket.CONNECTING);
+      });
 
-            after("Close the WebSocket", function () {
-                socket.removeEventListener("open", spyOpen);
-                // close the WebSocket
-                socket.close();
-            });
+      it("should wait for connection to open", async () => {
+        // wait for connection to open
+        const opened = await connection(socket);
+        expect(socket.readyState).to.equal(WebSocket.OPEN);
+      });
+      it("should have called open connection spy", function () {
+        expect(spyOpen.called).to.equal(true);
+      });
+    });
 
-            it("should have expected members on WebSocket() instance", function () {
-                expect(socket.url).to.exist;
-                expect(socket.url).to.equal("ws://localhost:8080/");
-                expect(socket.addEventListener).to.exist;
-                expect(socket.removeEventListener).to.exist;
-                assert.isFunction(socket.addEventListener);
-                expect(socket.readyState).to.exist;
-                expect(socket.readyState).to.equal(WebSocket.CONNECTING);
-            });
+    mocha.run();
 
-            it("should wait for connection to open", async () => {
-                // wait for connection to open
-                const opened = await connection(socket);
-                expect(socket.readyState).to.equal(WebSocket.OPEN);
-            });
-            it("should have called open connection spy", function () {
-                expect(spyOpen.called).to.equal(true);
-            });
-        });
-
-        mocha.run();
-
-    </script>
+  </script>
 
 </body>
 

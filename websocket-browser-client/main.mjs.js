@@ -8,7 +8,7 @@ const echoOptionElement = document.getElementById("echoOption");
 
 // Create the Application
 const app = new App(
-    'ws://localhost:8080',
-    outputElement,
-    echoOptionElement
+  'ws://localhost:8080',
+  outputElement,
+  echoOptionElement
 );

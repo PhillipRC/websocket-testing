@@ -1,20 +1,17 @@
 /// <reference types="cypress" />
 
+import waitForEvent from '../support/WaitForEvent'
 import App from '../../websocket-browser-client/App.mjs'
 
-const waitForEvent = (obj, eventType) => new Promise(function (resolve) {
-  let resolver = (event) => {
-    obj.removeEventListener(eventType, resolver)
-    resolve(event);
-  }
-  obj.addEventListener(eventType, resolver);
-});
-
 context('Tests instantiating the App Class using a real server', () => {
+
   let app;
   let spyApp;
+
   before(() => {
+    // create an instance of the App
     app = new App('ws://localhost:8080')
+    // spy on the App object with Sinon
     spyApp = Cypress.sinon.spy(app);
   })
 
@@ -23,7 +20,7 @@ context('Tests instantiating the App Class using a real server', () => {
   })
 
   it("should wait for connection to open", async () => {
-    // wait for connection to open if it is not already open
+    // wait for connection to open if not already open
     if (app.ws.readyState !== WebSocket.OPEN) {
       await waitForEvent(app.ws, 'open')
     }
@@ -37,7 +34,6 @@ context('Tests instantiating the App Class using a real server', () => {
   });
 
 })
-
 
 context('Tests loading the websocket-browser-client using a real server', () => {
   before(() => {

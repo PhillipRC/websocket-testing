@@ -2,35 +2,35 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <title>Mocha Tests</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  <meta charset="utf-8" />
+  <title>Mocha Tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
 </head>
 
 <body>
-    <div id="mocha"></div>
+  <div id="mocha"></div>
 
-    <script src="../node_modules/chai/chai.js"></script>
-    <script src="../node_modules/mocha/mocha.js"></script>
+  <script src="../node_modules/chai/chai.js"></script>
+  <script src="../node_modules/mocha/mocha.js"></script>
 
-    <script class="mocha-init">
-        mocha.setup("bdd");
-        mocha.checkLeaks();
+  <script class="mocha-init">
+    mocha.setup("bdd");
+    mocha.checkLeaks();
 
-        // use chai for assertions
-        let assert = chai.assert;
+    // use chai for assertions
+    let assert = chai.assert;
 
-        describe("Array", function () {
-            describe("#indexOf()", function () {
-                it("should return -1 when the value is not present", function () {
-                    assert.equal([1, 2, 3].indexOf(4), -1);
-                });
-            });
+    describe("Array", function () {
+      describe("#indexOf()", function () {
+        it("should return -1 when the value is not present", function () {
+          assert.equal([1, 2, 3].indexOf(4), -1);
         });
+      });
+    });
 
-        mocha.run();
-    </script>
+    mocha.run();
+  </script>
 
 </body>
 
