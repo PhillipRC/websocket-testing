@@ -106,3 +106,11 @@ Runs tests against the application within a headless browser within Cypress
 > `npx cypress run --spec **/app.spec.js`
 
 ![GitHub Logo](./cypress/integration/app.spec.png)
+
+----
+
+## cypress/[api.spec.js](./cypress/integration/api.spec.js)
+Runs tests against the websocket-node-server within a headless browser within Cypress
+> `npx cypress run --spec **/api.spec.js`
+
+![GitHub Logo](./cypress/integration/api.spec.png)
