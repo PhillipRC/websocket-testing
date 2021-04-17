@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
 import { StatusCodes } from 'http-status-codes'
-
 import waitForEvent from '../support/WaitForEvent'
 
 context('Test the HTTP Server', () => {
@@ -19,11 +18,14 @@ context('Test the HTTP Server', () => {
 
 context('Test the WebSocket Server', () => {
 
-  let ws;
-  let openHandlerStub = Cypress.sinon.stub()
-  let messageHandlerStub = Cypress.sinon.stub()
+  let ws
+  let openHandlerStub
+  let messageHandlerStub
 
   before(() => {
+    // create stubs to act as event handlers
+    openHandlerStub = cy.stub().as('onOpen')
+    messageHandlerStub = cy.stub().as('onMessage')
     // create a WebSocket
     ws = new WebSocket('ws://localhost:8080')
     // add stubs to track events
