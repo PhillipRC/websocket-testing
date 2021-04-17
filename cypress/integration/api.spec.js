@@ -1,15 +1,16 @@
 /// <reference types="cypress" />
+import { StatusCodes } from 'http-status-codes'
 
 import waitForEvent from '../support/WaitForEvent'
 
 context('Test the HTTP Server', () => {
 
-  it("should return", () => {
+  it("should return OK", () => {
     // make a request
     cy.request('http://localhost:3000/tests-browser/app.html').then(
       (response) => {
         // test that the response was OK
-        expect(response.status).to.equal(200)
+        expect(response.status).to.equal(StatusCodes.OK)
       }
     )
   })
@@ -41,7 +42,7 @@ context('Test the WebSocket Server', () => {
     expect(openHandlerStub.callCount).to.equal(1)
   });
 
-  it("should send and receive an `echo`", async () => {
+  it("should send then receive an `echo`", async () => {
     // save the call count at the start of this test
     let callCount = messageHandlerStub.callCount
     // send message via WebSocket to the server
