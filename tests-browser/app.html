@@ -79,19 +79,24 @@
       let spyApp;
       let mockServer;
 
+      // same as websocket-mock-server.js
+      function WebSocketMockServer(url) {
+        // create a mock end-point
+        const server = new Server(url)
+        // mock response when client connects
+        server.on('connection', function () {
+          server.send('ack')
+        })
+        // mock response when client sends a message
+        server.on('message', function () {
+          server.send('echo')
+        })
+        return server
+      }
+
       before("Create a WebSocket", function () {
         // create a mock server
-        mockServer = new Server('ws://localhost:8081');
-
-        // mock response when client connects
-        mockServer.on('connection', function (socket) {
-          mockServer.send('ack');
-        });
-
-        // mock response when client connects
-        mockServer.on('message', function () {
-          mockServer.send('echo');
-        });
+        mockServer = WebSocketMockServer('ws://localhost:8081');
 
         // create app
         app = new App('ws://localhost:8081');

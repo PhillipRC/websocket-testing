@@ -1,4 +1,4 @@
-# Exercising various Mocha, Chai, and Sinon Features to test WebSockets
+# Exercising various Mocha, Chai, Sinon and Cypress Features to test WebSockets
 Mostly these are experiments in understanding how [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) can be tested in a browser.
 ## Dependencies
 - [Mocha](https://mochajs.org/) is a test runner
@@ -23,7 +23,7 @@ Mostly these are experiments in understanding how [WebSockets](https://developer
 
 # Files
 
-- `/cypress` - Tests that run in a Cypress
+- `/cypress` - Tests and Support files that run in Cypress
 - `/tests-browser` - Tests that run in a browser
 - `/tests-node` - Tests that run in the CLI (Node)
 - `/websocket-browser-client` - A browser based WebSocket Client app
@@ -114,3 +114,19 @@ Runs tests against the websocket-node-server within a headless browser within Cy
 > `npx cypress run --spec **/api.spec.js`
 
 ![GitHub Logo](./cypress/integration/api.spec.png)
+
+----
+
+## cypress/[api.mock.spec.js](./cypress/integration/api.mock.spec.js)
+Runs tests against the websocket-mock-server within a headless browser within Cypress
+> `npx cypress run --spec **/api.mock.spec.js`
+
+![GitHub Logo](./cypress/integration/api.mock.spec.png)
+
+----
+
+## cypress/[api.mock.spec.js](./cypress/integration/app.mock.spec.js)
+Runs tests against the application within a headless browser winthin Cypress using the websocket-mock-server
+> `npx cypress run --spec **/app.mock.spec.js`
+
+![GitHub Logo](./cypress/integration/app.mock.spec.png)
