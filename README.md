@@ -110,7 +110,7 @@ Runs tests against the application within a headless browser within Cypress
 ----
 
 ## cypress/[api.spec.js](./cypress/integration/api.spec.js)
-Runs tests against the websocket-node-server within a headless browser within Cypress
+Runs tests against the [websocket-node-server](./websocket-node-server/websocket-node-server.js) within a headless browser within Cypress
 > `npx cypress run --spec **/api.spec.js`
 
 ![GitHub Logo](./cypress/integration/api.spec.png)
@@ -118,15 +118,15 @@ Runs tests against the websocket-node-server within a headless browser within Cy
 ----
 
 ## cypress/[api.mock.spec.js](./cypress/integration/api.mock.spec.js)
-Runs tests against the websocket-mock-server within a headless browser within Cypress
+Runs tests against the [websocket-mock-server](./websocket-mock-server/websocket-mock-server.js) within a headless browser within Cypress
 > `npx cypress run --spec **/api.mock.spec.js`
 
 ![GitHub Logo](./cypress/integration/api.mock.spec.png)
 
 ----
 
-## cypress/[api.mock.spec.js](./cypress/integration/app.mock.spec.js)
-Runs tests against the application within a headless browser winthin Cypress using the websocket-mock-server
+## cypress/[app.mock.spec.js](./cypress/integration/app.mock.spec.js)
+Runs tests against the application within a headless browser winthin Cypress using the [websocket-mock-server](./websocket-mock-server/websocket-mock-server.js)
 > `npx cypress run --spec **/app.mock.spec.js`
 
 ![GitHub Logo](./cypress/integration/app.mock.spec.png)
