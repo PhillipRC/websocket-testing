@@ -1,10 +1,10 @@
-# Exercising various Mocha, Chai, Sinon and Cypress Features to test WebSockets
-Mostly these are experiments in understanding how [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) can be tested in a browser.
+# Exercising various Mocha, Chai, Sinon and Cypress features to test WebSockets
+Experiments in understanding how [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API) can be tested in a browser.
 ## Dependencies
-- [Mocha](https://mochajs.org/) is a test runner
+- [Mocha](https://mochajs.org/) a test runner
 - [Chai](https://www.chaijs.com/) defines Asserition (test validators)
 - [Sinon](https://sinonjs.org/) is test Stub/Spy/Mock library
-- [Reconnecting-WebSocket](https://github.com/pladaria/reconnecting-websocket#readme) automaticaly reconnects if the WebSocket connection is lost
+- [Reconnecting-WebSocket](https://github.com/pladaria/reconnecting-websocket#readme) automaticaly reconnects when a WebSocket connection is lost
 - [Mock-Socket](https://github.com/thoov/mock-socket) mocks a socket.io server implementation
 - [Mock-WebSocket](https://github.com/PhillipRC/mock-websocket) a 'generic' WebSocket server implementation
 - [Express](https://github.com/expressjs/express) a Node Webserver
@@ -118,7 +118,7 @@ Runs tests against the [websocket-node-server](./websocket-node-server/websocket
 ----
 
 ## cypress/[api.mock.spec.js](./cypress/integration/api.mock.spec.js)
-Runs tests against the [websocket-mock-server](./websocket-mock-server/websocket-mock-server.js) within a headless browser within Cypress
+Runs tests against the [Mock-WebSocket](./websocket-mock-server/websocket-mock-server.js) within a headless browser within Cypress
 > `npx cypress run --spec **/api.mock.spec.js`
 
 ![GitHub Logo](./cypress/integration/api.mock.spec.png)
@@ -126,7 +126,7 @@ Runs tests against the [websocket-mock-server](./websocket-mock-server/websocket
 ----
 
 ## cypress/[app.mock.spec.js](./cypress/integration/app.mock.spec.js)
-Runs tests against the application within a headless browser winthin Cypress using the [websocket-mock-server](./websocket-mock-server/websocket-mock-server.js)
+Runs tests against the application within a headless browser winthin Cypress using the [Mock-WebSocket](./websocket-mock-server/websocket-mock-server.js)
 > `npx cypress run --spec **/app.mock.spec.js`
 
 ![GitHub Logo](./cypress/integration/app.mock.spec.png)

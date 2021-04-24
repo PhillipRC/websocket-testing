@@ -1,5 +1,5 @@
 /**
- * A module that mocks the behaviour of our websocket-node-server
+ * Use mock-websocket to mock the behaviour of the websocket-node-server
  */
 import { Server } from '../node_modules/mock-websocket/dist/mock-websocket'
 
